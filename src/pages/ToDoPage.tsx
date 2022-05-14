@@ -36,8 +36,7 @@ const ToDoPage = () => {
     }
 
     const onUpdateTodoStatus = (e: React.ChangeEvent<HTMLInputElement>, todoId: any) => {
-        console.log({todoId})
-        // dispatch(updateTodoStatus(todoId, e.target.checked))
+        dispatch(updateTodoStatus(todoId, e.target.checked))
     }
 
     const onToggleAllTodo = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,13 +61,15 @@ const ToDoPage = () => {
             <div className="ToDo__list">
                 {
                     todos?.length && todos?.map((todo, index) => {
+                        // show todos depends on showing state
+                        if(showing !== 'ALL' && todo.status !== showing) return null
                         return (
                             <div key={index} className="ToDo__item">
                                 <input
                                     type="checkbox"
                                     className="ToDo__item--checkbox"
-                                    // checked={showing === todo.status}
-                                    // onChange={(e) => onUpdateTodoStatus(e, index)}
+                                    checked={todo.status === TodoStatus.COMPLETED}
+                                    onChange={(e) => onUpdateTodoStatus(e, todo.id)}
                                 />
                                 <label className="ToDo__item--label">{todo.content}</label>
                                 <button
@@ -87,6 +88,7 @@ const ToDoPage = () => {
                 }
             </div>
             <div className="Todo__toolbar">
+                {/*add onclick handler for 'all' button*/}
                 <button className="Action__btn" onClick={() => setShowing('ALL')}>
                     All
                 </button>

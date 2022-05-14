@@ -27,7 +27,6 @@ export interface CreateTodoAction {
 }
 
 export function createTodo(newTodo: Todo): CreateTodoAction {
-  console.log({newTodo})
   return {
     type: CREATE_TODO,
     payload: newTodo
