@@ -63,9 +63,10 @@ button:hover {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin: 4px 0;
 }
 
-.ToDo__item--checkbox {
+.Todo-item__checkbox {
     position: relative;
     width: 28px;
     height: 28px;
@@ -78,7 +79,7 @@ button:hover {
     transition: background 175ms cubic-bezier(0.1, 0.1, 0.25, 1);
 }
 
-.ToDo__item--checkbox::before {
+.Todo-item__checkbox::before {
     position: absolute;
     content: "";
     display: block;
@@ -92,16 +93,16 @@ button:hover {
     transform: rotate(45deg);
     opacity: 0;
 }
-.ToDo__item--checkbox:checked {
+.Todo-item__checkbox:checked {
     color: #fff;
     border-color: #06842c;
     background: #06842c;
 }
-.ToDo__item--checkbox:checked::before {
+.Todo-item__checkbox:checked::before {
     opacity: 1;
 }
 
-.ToDo__item--label {
+.Todo-item__label {
     flex: 1 1;
     position: relative;
     font-size: 22px;
@@ -110,13 +111,13 @@ button:hover {
     user-select: none;
 }
 
-.ToDo__item--checkbox:checked ~ .ToDo__item--label{
+.Todo-item__checkbox:checked ~ .Todo-item__label{
     text-decoration: line-through;
     text-decoration-thickness: 3px;
     text-decoration-color: #363839;
 }
 
-.Todo__btn {
+.Todo-item__btn {
     outline: none;
     border: none;
     padding: 10px;
@@ -131,11 +132,11 @@ button:hover {
     margin-left: 5px;
 }
 
-.Todo__btn--edit {
+.Todo-item__btn--edit {
     background: dodgerblue;
 }
 
-.Todo__btn--delete {
+.Todo-item__btn--delete {
     background: orangered;
 }
 
@@ -158,11 +159,12 @@ button:hover {
 .Action__btn {
     padding: 16px 32px;
     border: none;
-    border-radius: 0 4px 4px 0;
+    border-radius: 5px;
     cursor: pointer;
     outline: none;
-    background: teal;
+    background: darkslateblue;
     color: #fff;
+    font-weight: 500;
     text-transform: capitalize;
     margin: 0 5px;
 }

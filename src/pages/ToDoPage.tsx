@@ -7,7 +7,7 @@ import {
     createTodo,
     toggleAllTodos,
     deleteAllTodos,
-    updateTodoStatus
+    updateTodoStatus, deleteTodo
 } from '../store/actions';
 import Service from '../service';
 import {TodoStatus} from '../models/todo';
@@ -44,10 +44,13 @@ const ToDoPage = () => {
         dispatch(toggleAllTodos(e.target.checked))
     }
 
+    const onDeleteTodo = (todoId: string) => {
+        dispatch(deleteTodo(todoId))
+    }
+
     const onDeleteAllTodo = () => {
         dispatch(deleteAllTodos());
     }
-
 
     return (
         <div className="ToDo__container">
@@ -60,33 +63,33 @@ const ToDoPage = () => {
                 />
             </div>
             <div className="ToDo__list">
-                {
-                    todos?.length && todos?.map((todo, index) => {
-                        // show todos depends on showing state
-                        if(showing !== 'ALL' && todo.status !== showing) return null
-                        return (
-                            <div key={index} className="ToDo__item">
-                                <input
-                                    type="checkbox"
-                                    className="ToDo__item--checkbox"
-                                    checked={todo.status === TodoStatus.COMPLETED}
-                                    onChange={(e) => onUpdateTodoStatus(e, todo.id)}
-                                />
-                                <label className="ToDo__item--label">{todo.content}</label>
-                                <button
-                                    className="Todo__btn Todo__btn--edit"
-                                >
-                                    <MdEdit/>
-                                </button>
-                                <button
-                                    className="Todo__btn Todo__btn--delete"
-                                >
-                                    <MdDelete/>
-                                </button>
-                            </div>
-                        );
-                    })
-                }
+                {todos.length === 0 && <h3>Let's add some plan!!!</h3>}
+                {todos?.length > 0 && todos?.map((todo, index) => {
+                    // show todos depends on showing state
+                    if (showing !== 'ALL' && todo.status !== showing) return null
+                    return (
+                        <div key={index} className="ToDo__item">
+                            <input
+                                type="checkbox"
+                                className="Todo-item__checkbox"
+                                checked={todo.status === TodoStatus.COMPLETED}
+                                onChange={(e) => onUpdateTodoStatus(e, todo.id)}
+                            />
+                            <label className="Todo-item__label">{todo.content}</label>
+                            <button
+                                className="Todo-item__btn Todo-item__btn--edit"
+                            >
+                                <MdEdit/>
+                            </button>
+                            <button
+                                className="Todo-item__btn Todo-item__btn--delete"
+                                onClick={() => onDeleteTodo(todo.id)}
+                            >
+                                <MdDelete/>
+                            </button>
+                        </div>
+                    );
+                })}
             </div>
             <div className="Todo__toolbar">
                 {/*add onclick handler for 'all' button*/}
