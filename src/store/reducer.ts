@@ -1,5 +1,5 @@
 import {Todo, TodoStatus} from '../models/todo';
-import {AppActions, CREATE_TODO, DELETE_ALL_TODOS, DELETE_TODO, TOGGLE_ALL_TODOS, UPDATE_TODO_STATUS} from './actions';
+import {AppActions, CREATE_TODO, DELETE_ALL_TODOS, DELETE_TODO, TOGGLE_ALL_TODOS, UPDATE_TODO, UPDATE_TODO_STATUS} from './actions';
 
 export interface AppState {
     todos: Array<Todo>
@@ -19,6 +19,20 @@ function reducer(state: AppState, action: AppActions): AppState {
                 ...state,
                 todos: newTodos
             };
+        }
+
+        case UPDATE_TODO: {
+            const newTodos = state.todos.map(todo => {
+                if(todo.id === action.payload.todoId) {
+                    return {...todo, content: action.payload.content}
+                }
+                return todo
+            })
+
+            return {
+                ...state,
+                todos: newTodos
+            }
         }
 
         case UPDATE_TODO_STATUS: {

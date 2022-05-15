@@ -7,7 +7,7 @@ import {
     createTodo,
     toggleAllTodos,
     deleteAllTodos,
-    updateTodoStatus, deleteTodo
+    updateTodoStatus, deleteTodo, updateTodo
 } from '../store/actions';
 import Service from '../service';
 import {TodoStatus} from '../models/todo';
@@ -18,7 +18,9 @@ type EnhanceTodoStatus = TodoStatus | 'ALL';
 const ToDoPage = () => {
     const [{todos}, dispatch] = useReducer(reducer, initialState);
     const [showing, setShowing] = useState<EnhanceTodoStatus>('ALL');
+    const [editingItem, setEditingItem] = useState('');
     const inputRef = useRef<any>(null);
+    const itemRef = useRef<any>(null);
 
     useEffect(() => {
         (async () => {
@@ -28,12 +30,30 @@ const ToDoPage = () => {
         })()
     }, [])
 
+    useEffect(() => {
+        if (itemRef.current) itemRef.current.focus()
+    }, [editingItem]);
+
+
     const onCreateTodo = async (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             const resp = await Service.createTodo(inputRef.current.value);
             dispatch(createTodo(resp));
             inputRef.current.value = ''
         }
+    }
+
+    const onUpdateTodo = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            dispatch(updateTodo(editingItem, itemRef.current.value))
+            setEditingItem('')
+            itemRef.current = null
+        }
+    }
+
+    const onBlurItemInput = () => {
+        itemRef.current = null
+        setEditingItem('')
     }
 
     const onUpdateTodoStatus = (e: React.ChangeEvent<HTMLInputElement>, todoId: any) => {
@@ -75,16 +95,21 @@ const ToDoPage = () => {
                                 checked={todo.status === TodoStatus.COMPLETED}
                                 onChange={(e) => onUpdateTodoStatus(e, todo.id)}
                             />
-                            <label className="Todo-item__label">{todo.content}</label>
-                            <button
-                                className="Todo-item__btn Todo-item__btn--edit"
-                            >
+                            {todo.id !== editingItem && (
+                                <label className="Todo-item__label" onDoubleClick={() => setEditingItem(todo.id)}>
+                                    {todo.content}
+                                </label>
+                            )}
+                            {todo.id === editingItem &&
+                               <input className="Todo-item__input" ref={itemRef} onKeyDown={onUpdateTodo}
+                                      onBlur={onBlurItemInput}/>
+                            }
+                            <button className="Todo-item__btn Todo-item__btn--edit"
+                                    onClick={() => setEditingItem(todo.id)}>
                                 <MdEdit/>
                             </button>
-                            <button
-                                className="Todo-item__btn Todo-item__btn--delete"
-                                onClick={() => onDeleteTodo(todo.id)}
-                            >
+                            <button className="Todo-item__btn Todo-item__btn--delete"
+                                    onClick={() => onDeleteTodo(todo.id)}>
                                 <MdDelete/>
                             </button>
                         </div>
