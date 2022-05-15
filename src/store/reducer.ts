@@ -1,5 +1,14 @@
 import {Todo, TodoStatus} from '../models/todo';
-import {AppActions, CREATE_TODO, DELETE_ALL_TODOS, DELETE_TODO, TOGGLE_ALL_TODOS, UPDATE_TODO, UPDATE_TODO_STATUS} from './actions';
+import {
+    AppActions,
+    CREATE_TODO,
+    DELETE_ALL_TODOS,
+    DELETE_TODO,
+    SET_TODO,
+    TOGGLE_ALL_TODOS,
+    UPDATE_TODO,
+    UPDATE_TODO_STATUS
+} from './actions';
 
 export interface AppState {
     todos: Array<Todo>
@@ -13,6 +22,13 @@ export const initialState: AppState = {
 // FIXED: wrap cases inside a block
 function reducer(state: AppState, action: AppActions): AppState {
     switch (action.type) {
+        case SET_TODO: {
+            return {
+                ...state,
+                todos: action.payload
+            };
+        }
+
         case CREATE_TODO: {
             const newTodos = [...state.todos, action.payload]
             return {

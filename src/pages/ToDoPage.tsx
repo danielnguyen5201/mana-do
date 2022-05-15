@@ -30,6 +30,11 @@ const ToDoPage = () => {
         })()
     }, [])
 
+    // after dispatch actions, todos will be changed --> run this effect
+    useEffect(() => {
+        Service.setTodos(todos)
+    }, [todos]);
+
     useEffect(() => {
         if (itemRef.current) itemRef.current.focus()
     }, [editingItem]);

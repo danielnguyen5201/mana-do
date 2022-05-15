@@ -17,6 +17,11 @@ class ApiFullstack extends IAPI {
 
         return resp.data.data;
     }
+
+    // temp func to avoid error - not use
+    setTodos(todos: Array<Todo>): void {
+        localStorage.setItem('todos', JSON.stringify(todos))
+    }
 }
 
 
