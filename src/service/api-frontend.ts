@@ -10,10 +10,10 @@ class ApiFrontend extends IAPI {
             status: TodoStatus.ACTIVE,
             id: shortid(),
             user_id: "firstUser",
-        } as Todo);
+        } as Todo)
     }
 
-    getTodos(): any {
+    async getTodos(): Promise<Todo[]> {
         const todosInStorage = localStorage.getItem('todos')
         return todosInStorage ? JSON.parse(todosInStorage) : []
     }

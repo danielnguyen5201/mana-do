@@ -10,7 +10,7 @@ import {
     updateTodoStatus, deleteTodo, updateTodo
 } from '../store/actions';
 import Service from '../service';
-import {TodoStatus} from '../models/todo';
+import {Todo, TodoStatus} from '../models/todo';
 
 type EnhanceTodoStatus = TodoStatus | 'ALL';
 
@@ -40,9 +40,9 @@ const ToDoPage = () => {
     }, [editingItem]);
 
 
-    const onCreateTodo = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const onCreateTodo = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
-            const resp = await Service.createTodo(inputRef.current.value);
+            const resp = Service.createTodo(inputRef.current.value);
             dispatch(createTodo(resp));
             inputRef.current.value = ''
         }
@@ -88,20 +88,22 @@ const ToDoPage = () => {
                 />
             </div>
             <div className="ToDo__list">
-                {todos.length === 0 && <h3>Let's add some plan!!!</h3>}
-                {todos?.length > 0 && todos?.map((todo, index) => {
+                {todos?.length === 0 && <h3>Let's add some plan!!!</h3>}
+                {todos?.length > 0 && todos?.map((todo, key) => {
                     // show todos depends on showing state
                     if (showing !== 'ALL' && todo.status !== showing) return null
                     return (
-                        <div key={index} className="ToDo__item">
+                        <div key={key} className="ToDo__item" data-testid="todo">
                             <input
                                 type="checkbox"
                                 className="Todo-item__checkbox"
                                 checked={todo.status === TodoStatus.COMPLETED}
                                 onChange={(e) => onUpdateTodoStatus(e, todo.id)}
+                                data-testid="todo-checkbox"
                             />
                             {todo.id !== editingItem && (
-                                <label className="Todo-item__label" onDoubleClick={() => setEditingItem(todo.id)}>
+                                <label className="Todo-item__label" onDoubleClick={() => setEditingItem(todo.id)}
+                                data-testid="todo-label">
                                     {todo.content}
                                 </label>
                             )}
