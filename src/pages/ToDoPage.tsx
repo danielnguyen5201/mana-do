@@ -40,9 +40,9 @@ const ToDoPage = () => {
     }, [editingItem]);
 
 
-    const onCreateTodo = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const onCreateTodo = async (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
-            const resp = Service.createTodo(inputRef.current.value);
+            const resp = await Service.createTodo(inputRef.current.value);
             dispatch(createTodo(resp));
             inputRef.current.value = ''
         }
@@ -109,7 +109,7 @@ const ToDoPage = () => {
                             )}
                             {todo.id === editingItem &&
                                <input className="Todo-item__input" ref={itemRef} onKeyDown={onUpdateTodo}
-                                      onBlur={onBlurItemInput}/>
+                                      onBlur={onBlurItemInput} data-testid="todo-input"/>
                             }
                             <button className="Todo-item__btn Todo-item__btn--edit"
                                     onClick={() => setEditingItem(todo.id)}>
